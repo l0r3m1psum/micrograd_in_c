@@ -360,8 +360,7 @@ static bool
 Value_is_toposorted_reversed(size_t len, Value *vals[static len]) {
 	// We have to check that edge only go backward because we are testing for a
 	// reversed topological order.
-	size_t i = len; if (i != 0) do {
-		i--;
+	for (size_t i = len; i --> 0;) {
 		if (vals[i] == NULL) {
 			continue;
 		}
@@ -379,7 +378,7 @@ Value_is_toposorted_reversed(size_t len, Value *vals[static len]) {
 				return false;
 			}
 		}
-	} while (i != 0);
+	}
 	return true;
 }
 
@@ -426,8 +425,7 @@ Value_backprop(Arena alloc[static 1], Value *val) {
 	assert(vals_len == visited_len);
 	assert(vals[vals_len-1] == val);
 	val->grad = 1;
-	size_t i = vals_len; do {
-		i--;
+	for (size_t i = vals_len; i --> 0;) {
 		switch (vals[i]->op) {
 		case OP_NOP: break;
 		case OP_ADD:
@@ -451,7 +449,7 @@ Value_backprop(Arena alloc[static 1], Value *val) {
 			break;
 		}
 		}
-	} while (i != 0);
+	}
 
 	Arena_reset(&temp);
 	return true;
